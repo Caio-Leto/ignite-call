@@ -20,11 +20,11 @@ import { Container, Header } from '../styles'
 import {
   FormError,
   IntervalBox,
-  IntervalsContainer,
+  IntervalContainer,
   IntervalDay,
   IntervalInputs,
   IntervalItem,
-} from './style'
+} from './styles'
 
 const timeIntervalsFormSchema = z.object({
   intervals: z
@@ -126,7 +126,7 @@ export default function TimeIntervals() {
         </Header>
 
         <IntervalBox as="form" onSubmit={handleSubmit(handleSetTimeIntervals)}>
-          <IntervalsContainer>
+          <IntervalContainer>
             {fields.map((field, index) => {
               return (
                 <IntervalItem key={field.id}>
@@ -137,7 +137,7 @@ export default function TimeIntervals() {
                       render={({ field }) => {
                         return (
                           <Checkbox
-                            onCheckedChange={(checked) =>
+                            onCheckedChange={(checked: boolean) =>
                               field.onChange(checked === true)
                             }
                             checked={field.value}
@@ -166,7 +166,7 @@ export default function TimeIntervals() {
                 </IntervalItem>
               )
             })}
-          </IntervalsContainer>
+          </IntervalContainer>
 
           {errors.intervals && (
             <FormError size="sm">{errors.intervals.message}</FormError>
