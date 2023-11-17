@@ -1,4 +1,4 @@
-import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter } from 'next/router'
 import {
   Button,
   Checkbox,
@@ -7,16 +7,13 @@ import {
   Text,
   TextInput,
 } from '@ignite-ui/react'
-import { NextSeo } from 'next-seo'
-import { useRouter } from 'next/router'
 import { ArrowRight } from 'phosphor-react'
-import { Controller, useFieldArray, useForm } from 'react-hook-form'
+import { useForm, useFieldArray, Controller } from 'react-hook-form'
 import { z } from 'zod'
-import { api } from '../../../lib/axios'
-import { convertTimeStringToMinutes } from '../../../utils/conver-time-string-to-minutes'
-import { getWeekDays } from '../../../utils/get-week-days'
-import { Container, Header } from '../styles'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { NextSeo } from 'next-seo'
 
+import { Container, Header } from '../styles'
 import {
   FormError,
   IntervalBox,
@@ -25,6 +22,9 @@ import {
   IntervalInputs,
   IntervalItem,
 } from './styles'
+import { getWeekDays } from '../../../utils/get-week-days'
+import { convertTimeStringToMinutes } from '../../../utils/conver-time-string-to-minutes'
+import { api } from '../../../lib/axios'
 
 const timeIntervalsFormSchema = z.object({
   intervals: z
@@ -39,7 +39,7 @@ const timeIntervalsFormSchema = z.object({
     .length(7)
     .transform((intervals) => intervals.filter((interval) => interval.enabled))
     .refine((intervals) => intervals.length > 0, {
-      message: 'Você precisa selecionar pelo menos um dia da semana',
+      message: 'Você precisa selecionar pelo menos um dia da semana',
     })
     .transform((intervals) => {
       return intervals.map((interval) => {
@@ -59,7 +59,7 @@ const timeIntervalsFormSchema = z.object({
       },
       {
         message:
-          'O horário de término deve ser pelo menos 1h distante do início.',
+          'O horário de término deve ser pelo menos 1h distante do horário de início.',
       },
     ),
 })
@@ -72,9 +72,9 @@ export default function TimeIntervals() {
     register,
     handleSubmit,
     control,
-    watch,
     formState: { isSubmitting, errors },
-  } = useForm<TimeIntervalsFormInput>({
+    watch,
+  } = useForm<TimeIntervalsFormInput, any, TimeIntervalsFormOutput>({
     resolver: zodResolver(timeIntervalsFormSchema),
     defaultValues: {
       intervals: [
@@ -98,10 +98,11 @@ export default function TimeIntervals() {
     name: 'intervals',
   })
 
+  // saber em tempo real as mudanças que ocorreram no campo intervals
   const intervals = watch('intervals')
 
-  async function handleSetTimeIntervals(data: any) {
-    const { intervals } = data as TimeIntervalsFormOutput
+  async function handleSetTimeIntervals(data: TimeIntervalsFormOutput) {
+    const { intervals } = data
 
     await api.post('/users/time-intervals', {
       intervals,
@@ -119,7 +120,7 @@ export default function TimeIntervals() {
           <Heading as="strong">Quase lá</Heading>
           <Text>
             Defina o intervalo de horário que você está disponível em cada dia
-            da semana.
+            da semana
           </Text>
 
           <MultiStep size={4} currentStep={3} />
@@ -132,14 +133,15 @@ export default function TimeIntervals() {
                 <IntervalItem key={field.id}>
                   <IntervalDay>
                     <Controller
-                      name={`intervals.${index}.enabled`}
+                      name={`intervals.${index}.enabled`} // nome do campo que o checkbox irá alterar
                       control={control}
                       render={({ field }) => {
+                        // renderizando e recebendo como parâmetro o nosso dado informado na propriedade name, ou seja, field = intervals.${index}.enabled
                         return (
                           <Checkbox
-                            onCheckedChange={(checked: boolean) =>
+                            onCheckedChange={(checked) => {
                               field.onChange(checked === true)
-                            }
+                            }}
                             checked={field.value}
                           />
                         )
@@ -173,7 +175,7 @@ export default function TimeIntervals() {
           )}
 
           <Button type="submit" disabled={isSubmitting}>
-            Próximo passo
+            Proximo passo
             <ArrowRight />
           </Button>
         </IntervalBox>

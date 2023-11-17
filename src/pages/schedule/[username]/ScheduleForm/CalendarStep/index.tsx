@@ -41,21 +41,13 @@ export function CalendarStep({ onSelectDateTime }: CalendarStepProps) {
   const { data: availability } = useQuery<Availability>({
     queryKey: ['availability', selectedDateWithoutTime],
     queryFn: async () => {
-      if (!selectedDateWithoutTime) {
-        throw new Error('Data inválida')
-      }
+      const response = await api.get(`/users/${username}/availability`, {
+        params: {
+          date: selectedDateWithoutTime,
+        },
+      })
 
-      try {
-        const response = await api.get(`/users/${username}/availability`, {
-          params: {
-            date: selectedDateWithoutTime,
-          },
-        })
-
-        return response.data
-      } catch (error) {
-        throw new Error('Erro ao buscar disponibilidade')
-      }
+      return response.data
     },
     enabled: !!selectedDateWithoutTime,
   })
