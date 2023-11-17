@@ -37,6 +37,11 @@ export function CalendarStep({ onSelectDateTime }: CalendarStepProps) {
   const selectedDateWithoutTime: string | null = selectedDate
     ? dayjs(selectedDate).format('YYYY-MM-DD')
     : null
+  console.log('selectedDateWithoutTime:', selectedDateWithoutTime)
+
+  const endpoint = `/users/${username}/availability`
+
+  console.log('Endpoint:', endpoint)
 
   const { data: availability } = useQuery<Availability>({
     queryKey: ['availability', selectedDateWithoutTime],
