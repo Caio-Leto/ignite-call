@@ -39,6 +39,9 @@ export function ClaimUsernameForm() {
     <>
       <Form as="form" onSubmit={handleSubmit(handleClaimUsername)}>
         <TextInput
+          type={undefined}
+          step={undefined}
+          disabled={null}
           size="sm"
           prefix="ignite.com/"
           placeholder="seu-usuario"
