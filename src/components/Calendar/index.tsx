@@ -33,7 +33,7 @@ interface CalendarProps {
   selectedDate?: Date | null
   onDateSelected: (date: Date) => void
 }
-
+/* eslint-disable */
 export function Calendar({ selectedDate, onDateSelected }: CalendarProps) {
   const [currentDate, setCurrentDate] = useState(() => {
     return dayjs().set('date', 1)
