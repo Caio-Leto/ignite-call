@@ -150,15 +150,13 @@ export default function TimeIntervals() {
                     <Text>{weekDays[field.weekDay]}</Text>
                   </IntervalDay>
                   <IntervalInputs>
-                    <TextInput
-                      size="sm"
+                    <input
                       type="time"
                       step={60}
                       disabled={intervals[index].enabled === false}
                       {...register(`intervals.${index}.startTime`)}
                     />
-                    <TextInput
-                      size="sm"
+                    <input
                       type="time"
                       step={60}
                       disabled={intervals[index].enabled === false}
