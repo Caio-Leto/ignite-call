@@ -9,10 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@course-ignite-ui/react": "^4.0.0",
+    "@donecode-ignite-ui/react": "^3.1.3",
+    "@gustavokissel-ignite-ui/react": "^1.0.1",
     "@hookform/resolvers": "^3.3.2",
-    "@ignite-ui/react": "^2.1.5",
+    "@ignite-ui/react": "^2.2.4",
     "@prisma/client": "^5.5.2",
     "@tanstack/react-query": "^5.8.4",
+    "@tutods-ignite-ui/react": "^2.2.0",
     "axios": "^1.6.1",
     "dayjs": "^1.11.10",
     "googleapis": "^128.0.0",
