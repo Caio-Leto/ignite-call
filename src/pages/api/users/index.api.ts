@@ -2,7 +2,7 @@ import { prisma } from '@/src/lib/prisma'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { setCookie } from 'nookies'
 
-export default async function handler(
+export async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
